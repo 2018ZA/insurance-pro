@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+
+    <changeSet id="data-1" author="junie">
+        <validCheckSum>ANY</validCheckSum>
+        <insert tableName="user_role">
+            <column name="code" value="ADMIN"/>
+            <column name="name" value="Администратор"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="code" value="AGENT"/>
+            <column name="name" value="Агент"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="code" value="MANAGER"/>
+            <column name="name" value="Менеджер"/>
+        </insert>
+
+        <insert tableName="insurance_type">
+            <column name="code" value="OSAGO"/>
+            <column name="name" value="ОСАГО"/>
+            <column name="category" value="Авто"/>
+        </insert>
+        <insert tableName="insurance_type">
+            <column name="code" value="CASCO"/>
+            <column name="name" value="КАСКО"/>
+            <column name="category" value="Авто"/>
+        </insert>
+        <insert tableName="insurance_type">
+            <column name="code" value="LIFE"/>
+            <column name="name" value="Страхование жизни"/>
+            <column name="category" value="Жизнь"/>
+        </insert>
+        <insert tableName="insurance_type">
+            <column name="code" value="PROPERTY"/>
+            <column name="name" value="Страхование недвижимости"/>
+            <column name="category" value="Недвижимость"/>
+        </insert>
+
+        <insert tableName="contract_status">
+            <column name="code" value="DRAFT"/>
+            <column name="name" value="Черновик"/>
+        </insert>
+        <insert tableName="contract_status">
+            <column name="code" value="ACTIVE"/>
+            <column name="name" value="Активен"/>
+        </insert>
+        <insert tableName="contract_status">
+            <column name="code" value="EXPIRED"/>
+            <column name="name" value="Истек"/>
+        </insert>
+        <insert tableName="contract_status">
+            <column name="code" value="TERMINATED"/>
+            <column name="name" value="Расторгнут"/>
+        </insert>
+
+        <insert tableName="payment_status">
+            <column name="code" value="PENDING"/>
+            <column name="name" value="Ожидает оплаты"/>
+        </insert>
+        <insert tableName="payment_status">
+            <column name="code" value="PAID"/>
+            <column name="name" value="Оплачен"/>
+        </insert>
+
+        <insert tableName="claim_status">
+            <column name="code" value="NEW"/>
+            <column name="name" value="Новый"/>
+        </insert>
+        <insert tableName="claim_status">
+            <column name="code" value="APPROVED"/>
+            <column name="name" value="Одобрен"/>
+        </insert>
+
+        <!-- Хэшированные пароли (admin123, agent123, manager123) -->
+        <insert tableName="users">
+            <column name="login" value="admin"/>
+            <column name="password" value="$2a$10$9vxtFDTf3dw.RJytGocBi.iT.YLLpsMhCLSw8wu4qzXzOpdhtb7l2"/>
+            <column name="role_code" value="ADMIN"/>
+            <column name="full_name" value="Иванов Иван Иванович"/>
+        </insert>
+        <insert tableName="users">
+            <column name="login" value="agent1"/>
+            <column name="password" value="$2a$10$xaVWsI8wbHT2uSt3ZxP56u1TZMdsbt7a8tZgd49c2mytoMqkaz.nm"/>
+            <column name="role_code" value="AGENT"/>
+            <column name="full_name" value="Петров Петр Петрович"/>
+        </insert>
+        <insert tableName="users">
+            <column name="login" value="manager1"/>
+            <column name="password" value="$2a$10$BY1RbuW01vO2lxg0A7ZTY.6d/BSnGPImOWZeIrVqf4mXU5q1BA.Bm"/>
+            <column name="role_code" value="MANAGER"/>
+            <column name="full_name" value="Сидорова Мария Сергеевна"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

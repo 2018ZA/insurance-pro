@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1766599741780-1" author="zen (generated)">
+        <createTable tableName="insurance_type">
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="insurance_type_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="VARCHAR(100)"/>
+            <column defaultValueBoolean="true" name="active" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-2" author="zen (generated)">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" startWith="4" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="login" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_code" type="VARCHAR(50)"/>
+            <column name="full_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="BOOLEAN"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-3" author="zen (generated)">
+        <createTable tableName="client">
+            <column autoIncrement="true" name="id" startWith="3" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="client_pkey"/>
+            </column>
+            <column name="full_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="passport_series" type="VARCHAR(10)"/>
+            <column name="passport_number" type="VARCHAR(20)"/>
+            <column name="phone" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="registration_date"
+                    type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-4" author="zen (generated)">
+        <createTable tableName="contract">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="contract_pkey"/>
+            </column>
+            <column name="contract_number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="BIGINT"/>
+            <column name="insurance_type_code" type="VARCHAR(50)"/>
+            <column name="agent_id" type="BIGINT"/>
+            <column name="status_code" type="VARCHAR(50)"/>
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="premium_amount" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="insured_amount" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-5" author="zen (generated)">
+        <createTable tableName="payment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payment_pkey"/>
+            </column>
+            <column name="contract_id" type="BIGINT"/>
+            <column name="amount" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_DATE" name="payment_date" type="date"/>
+            <column name="status_code" type="VARCHAR(50)"/>
+            <column name="payment_method" type="VARCHAR(50)"/>
+            <column name="transaction_number" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-6" author="zen (generated)">
+        <createTable tableName="insurance_claim">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="insurance_claim_pkey"/>
+            </column>
+            <column name="contract_id" type="BIGINT"/>
+            <column name="claim_number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="incident_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="claimed_amount" type="numeric(15, 2)"/>
+            <column name="approved_amount" type="numeric(15, 2)"/>
+            <column name="status_code" type="VARCHAR(50)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-7" author="zen (generated)">
+        <createTable tableName="osago_data">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="osago_data_pkey"/>
+            </column>
+            <column name="contract_id" type="BIGINT"/>
+            <column name="license_plate" type="VARCHAR(20)"/>
+            <column name="vehicle_model" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vin" type="VARCHAR(50)"/>
+            <column name="driving_experience" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-8" author="zen (generated)">
+        <createTable tableName="casco_data">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="casco_data_pkey"/>
+            </column>
+            <column name="contract_id" type="BIGINT"/>
+            <column name="vehicle_model" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manufacture_year" type="INTEGER"/>
+            <column name="vehicle_cost" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="has_franchise" type="BOOLEAN"/>
+            <column defaultValueNumeric="0" name="franchise_amount" type="numeric(15, 2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-9" author="zen (generated)">
+        <createTable tableName="life_insurance_data">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="life_insurance_data_pkey"/>
+            </column>
+            <column name="contract_id" type="BIGINT"/>
+            <column name="birth_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="VARCHAR(10)"/>
+            <column name="profession" type="VARCHAR(100)"/>
+            <column name="health_status" type="VARCHAR(200)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-10" author="zen (generated)">
+        <createTable tableName="property_insurance_data">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="property_insurance_data_pkey"/>
+            </column>
+            <column name="contract_id" type="BIGINT"/>
+            <column name="property_type" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="area" type="numeric(10, 2)"/>
+            <column name="construction_year" type="INTEGER"/>
+            <column name="cost" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-11" author="zen (generated)">
+        <createIndex indexName="idx_users_role" tableName="users">
+            <column name="role_code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-12" author="zen (generated)">
+        <addUniqueConstraint columnNames="login" constraintName="users_login_key" tableName="users"/>
+    </changeSet>
+    <changeSet id="1766599741780-13" author="zen (generated)">
+        <addUniqueConstraint columnNames="phone" constraintName="client_phone_key" tableName="client"/>
+    </changeSet>
+    <changeSet id="1766599741780-14" author="zen (generated)">
+        <createIndex indexName="idx_contract_client" tableName="contract">
+            <column name="client_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-15" author="zen (generated)">
+        <createIndex indexName="idx_contract_agent" tableName="contract">
+            <column name="agent_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-16" author="zen (generated)">
+        <createIndex indexName="idx_contract_status" tableName="contract">
+            <column name="status_code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-17" author="zen (generated)">
+        <createIndex indexName="idx_contract_type" tableName="contract">
+            <column name="insurance_type_code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-18" author="zen (generated)">
+        <addUniqueConstraint columnNames="contract_number" constraintName="contract_contract_number_key"
+                             tableName="contract"/>
+    </changeSet>
+    <changeSet id="1766599741780-19" author="zen (generated)">
+        <createIndex indexName="idx_payment_contract" tableName="payment">
+            <column name="contract_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-20" author="zen (generated)">
+        <createIndex indexName="idx_payment_status" tableName="payment">
+            <column name="status_code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-21" author="zen (generated)">
+        <createIndex indexName="idx_claim_contract" tableName="insurance_claim">
+            <column name="contract_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-22" author="zen (generated)">
+        <createIndex indexName="idx_claim_status" tableName="insurance_claim">
+            <column name="status_code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1766599741780-23" author="zen (generated)">
+        <addUniqueConstraint columnNames="claim_number" constraintName="insurance_claim_claim_number_key"
+                             tableName="insurance_claim"/>
+    </changeSet>
+    <changeSet id="1766599741780-24" author="zen (generated)">
+        <addUniqueConstraint columnNames="contract_id" constraintName="osago_data_contract_id_key"
+                             tableName="osago_data"/>
+    </changeSet>
+    <changeSet id="1766599741780-25" author="zen (generated)">
+        <addUniqueConstraint columnNames="contract_id" constraintName="casco_data_contract_id_key"
+                             tableName="casco_data"/>
+    </changeSet>
+    <changeSet id="1766599741780-26" author="zen (generated)">
+        <addUniqueConstraint columnNames="contract_id" constraintName="life_insurance_data_contract_id_key"
+                             tableName="life_insurance_data"/>
+    </changeSet>
+    <changeSet id="1766599741780-27" author="zen (generated)">
+        <addUniqueConstraint columnNames="contract_id" constraintName="property_insurance_data_contract_id_key"
+                             tableName="property_insurance_data"/>
+    </changeSet>
+    <changeSet id="1766599741780-28" author="zen (generated)">
+        <createTable tableName="claim_status">
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="claim_status_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-29" author="zen (generated)">
+        <createTable tableName="contract_status">
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="contract_status_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-30" author="zen (generated)">
+        <createTable tableName="payment_status">
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payment_status_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-31" author="zen (generated)">
+        <createTable tableName="user_role">
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_role_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1766599741780-32" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="casco_data"
+                                 constraintName="casco_data_contract_id_fkey" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="contract"/>
+    </changeSet>
+    <changeSet id="1766599741780-33" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="agent_id" baseTableName="contract"
+                                 constraintName="contract_agent_id_fkey" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1766599741780-34" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="contract"
+                                 constraintName="contract_client_id_fkey" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="client"/>
+    </changeSet>
+    <changeSet id="1766599741780-35" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="insurance_type_code" baseTableName="contract"
+                                 constraintName="contract_insurance_type_code_fkey" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION" referencedColumnNames="code"
+                                 referencedTableName="insurance_type"/>
+    </changeSet>
+    <changeSet id="1766599741780-36" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="status_code" baseTableName="contract"
+                                 constraintName="contract_status_code_fkey" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="code" referencedTableName="contract_status"/>
+    </changeSet>
+    <changeSet id="1766599741780-37" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="insurance_claim"
+                                 constraintName="insurance_claim_contract_id_fkey" onDelete="CASCADE"
+                                 onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contract"/>
+    </changeSet>
+    <changeSet id="1766599741780-38" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="status_code" baseTableName="insurance_claim"
+                                 constraintName="insurance_claim_status_code_fkey" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION" referencedColumnNames="code" referencedTableName="claim_status"/>
+    </changeSet>
+    <changeSet id="1766599741780-39" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="life_insurance_data"
+                                 constraintName="life_insurance_data_contract_id_fkey" onDelete="CASCADE"
+                                 onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contract"/>
+    </changeSet>
+    <changeSet id="1766599741780-40" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="osago_data"
+                                 constraintName="osago_data_contract_id_fkey" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="contract"/>
+    </changeSet>
+    <changeSet id="1766599741780-41" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="payment"
+                                 constraintName="payment_contract_id_fkey" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="contract"/>
+    </changeSet>
+    <changeSet id="1766599741780-42" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="status_code" baseTableName="payment"
+                                 constraintName="payment_status_code_fkey" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="code" referencedTableName="payment_status"/>
+    </changeSet>
+    <changeSet id="1766599741780-43" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="property_insurance_data"
+                                 constraintName="property_insurance_data_contract_id_fkey" onDelete="CASCADE"
+                                 onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contract"/>
+    </changeSet>
+    <changeSet id="1766599741780-44" author="zen (generated)">
+        <addForeignKeyConstraint baseColumnNames="role_code" baseTableName="users" constraintName="users_role_code_fkey"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="code"
+                                 referencedTableName="user_role"/>
+    </changeSet>
+
+</databaseChangeLog>

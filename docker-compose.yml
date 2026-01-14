@@ -1,0 +1,98 @@
+# Docker Compose файл для развертывания всего приложения
+# Версия формата Docker Compose
+version: "3.9"
+
+# Определение сервисов (контейнеров), которые будут запущены
+services:
+
+  # Сервис 1: База данных PostgreSQL
+  insurance-pro-db:
+    # Используем официальный образ PostgreSQL 17 версии
+    image: postgres:17
+    # Автоматически перезапускать контейнер при сбоях
+    restart: always
+    # Имя контейнера для удобной идентификации
+    container_name: insurance-pro-db
+    # Проброс портов: локальный порт 25432 → порт контейнера 5432
+    # Это позволяет подключаться к БД с хоста через localhost:25432
+    ports:
+      - "25432:5432"
+    # Том (volume) для хранения данных БД
+    # Обеспечивает сохранность данных при перезапуске/удалении контейнера
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # Переменные окружения для настройки PostgreSQL
+    environment:
+      # Имя базы данных при создании
+      - POSTGRES_DB=kurs_proj
+      # Имя пользователя по умолчанию
+      - POSTGRES_USER=vlad
+      # Пароль пользователя (пустой в данном случае - НЕ БЕЗОПАСНО!)
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    # Проверка здоровья контейнера
+    # Docker будет проверять, готова ли БД к подключениям
+    healthcheck:
+      # Команда проверки доступности PostgreSQL
+      test: ["CMD-SHELL", "pg_isready -U pgadmin -d insuranceprodb"]
+      # Интервал проверок: каждые 5 секунд
+      interval: 5s
+      # Таймаут ожидания ответа: 5 секунд
+      timeout: 5s
+      # Количество повторных попыток перед пометкой как нездоровый
+      retries: 5
+
+  # Сервис 2: Бэкенд приложение (Java Spring Boot)
+  insurance-pro-backend:
+    # Сборка образа из Dockerfile, расположенного в указанной директории
+    build:
+      # Контекст сборки - директория с бэкендом
+      context: ./insurance-pro-backend
+      # Имя Dockerfile для сборки
+      dockerfile: Dockerfile
+    container_name: insurance-pro-backend
+    # Проброс портов: локальный 8080 → порт приложения в контейнере 8080
+    ports:
+      - "8080:8080"
+    # Переменные окружения для Spring Boot приложения
+    environment:
+      # Хост базы данных (имя сервиса в Docker сети)
+      - DB_HOST=insurance-pro-db
+      # Порт БД внутри Docker сети
+      - DB_PORT=5432
+      # Имя базы данных для подключения (не совпадает с POSTGRES_DB выше!)
+      - DB_NAME=kurs_proj
+      # Имя пользователя для подключения (не совпадает с POSTGRES_USER выше!)
+      - DB_USERNAME=vlad
+      # Пароль для подключения к БД
+      - DB_PASSWORD=
+      # Секретный ключ для JWT токенов
+      - JWT_SECRET=9a657c91d848148b8c734b22c74d6c6e3b2e532a246831d04b62d3544c010c73
+    # Зависимости: бэкенд запустится только после успешного запуска БД
+    depends_on:
+      insurance-pro-db:
+        # Условие: ждем, пока БД пройдет проверку здоровья (healthcheck)
+        condition: service_healthy
+
+  # Сервис 3: Фронтенд приложение (React)
+  insurance-pro-frontend:
+    # Сборка образа для фронтенда
+    build:
+      context: ./insurance-pro-frontend
+      dockerfile: Dockerfile
+      # Аргументы, передаваемые при сборке (для Vite)
+      args:
+        # Базовый URL для API запросов
+        - VITE_API_BASE_URL=/api
+    container_name: insurance-pro-frontend
+    # Проброс портов: локальный 9090 → порт Nginx в контейнере 80
+    ports:
+      - "9090:80"
+    # Зависимости: фронтенд запустится после бэкенда
+    depends_on:
+      - insurance-pro-backend
+
+# Определение томов (volumes) для хранения данных
+volumes:
+  # Именованный том для хранения данных PostgreSQL
+  postgres_data:
+    # При создании будет использован драйвер по умолчанию (local)

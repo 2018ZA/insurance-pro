@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: ${DB_PASSWORD:pgadmin}
+    username: ${DB_USERNAME:pgadmin}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:25432}/${DB_NAME:insuranceprodb}
+  application:
+    name: insuranceprobackend
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+jwt:
+  secret: ${JWT_SECRET:9a657c91d848148b8c734b22c74d6c6e3b2e532a246831d04b62d3544c010c73}
+  expiration: ${JWT_EXPIRATION:86400000}
